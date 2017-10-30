@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var autoPrefixer = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var isPord = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: './src/main.js',
@@ -12,27 +13,6 @@ module.exports = {
     },
     module: {
         rules: [{
-                test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    loaders: {
-                        scss: ExtractTextPlugin.extract({
-                            allChunks: true,
-                            fallback: 'vue-style-loader',
-                            use: [
-                                { loader: 'css-loader' },
-                                { loader: 'sass-loader' }
-                            ]
-                        })
-                    },
-                    postcss: {
-                        plugins: [
-                            autoPrefixer(['iOS >= 7', 'last 2 versions', 'Android >= 2', 'Firefox >= 4', 'Chrome >= 4', 'IE >= 7'])
-                        ]
-                    }
-                }
-            },
-            {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
@@ -66,7 +46,35 @@ module.exports = {
                     }
                 ]
             }
-        ]
+        ].concat(isPord ? [{
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+                loaders: {
+                    scss: ExtractTextPlugin.extract({
+                        allChunks: true,
+                        fallback: 'vue-style-loader',
+                        use: [
+                            { loader: 'css-loader' },
+                            { loader: 'sass-loader' }
+                        ]
+                    })
+                },
+                postcss: {
+                    plugins: [
+                        autoPrefixer(['iOS >= 7', 'last 2 versions', 'Android >= 2', 'Firefox >= 4', 'Chrome >= 4', 'IE >= 7'])
+                    ]
+                }
+            }
+        }] : [{
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+                loaders: {
+                    'scss': 'vue-style-loader!css-loader!sass-loader'
+                }
+            }
+        }])
     },
     resolve: {
         alias: {
@@ -81,11 +89,10 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map',
-    plugins: [new ExtractTextPlugin('main.css')]
+    devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (isPord) {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
@@ -102,6 +109,7 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
-        })
+        }),
+        new ExtractTextPlugin('main.css')
     ])
 }
