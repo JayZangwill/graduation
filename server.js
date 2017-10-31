@@ -6,7 +6,7 @@ const fs = require('fs'),
     staticFileMiddleware = express.static(__dirname);
 let html = fs.readFileSync('index.html').toString();
 if (!/<link rel=\"stylesheet\" href=\"dist\/css\/main.css\">/.test(html)) {
-    html = html.replace(/<title>(\w+)<\/title>/, '<title>$1</title>\n\t<link rel="stylesheet" href="dist/css/main.css">');
+    html = html.replace(/<title>(\w+)<\/title>/, '<title>$1</title>\n\t<link rel="stylesheet" href="dist/css/common.css">\n\t<link rel="stylesheet" href="dist/css/main.css">');
     fs.writeFileSync('index.html', html);
 }
 

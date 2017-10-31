@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<el-button>默认按钮</el-button>
 		<h1>123</h1>
 		<router-link to='/home'>123</router-link>
 	</div>

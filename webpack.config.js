@@ -3,9 +3,11 @@ const fs = require('fs'),
     webpack = require('webpack'),
     autoPrefixer = require('autoprefixer'),
     isPord = process.env.NODE_ENV === 'production',
-    ExtractTextPlugin = require('extract-text-webpack-plugin');
+    CleanWebpackPlugin = require('clean-webpack-plugin');
+ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    extractCSS = new ExtractTextPlugin('css/common.css');
 
-fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel=\"stylesheet\" href=\"dist\/css\/main\.css\">/, '')));
+fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.css">/g, '')));
 
 module.exports = {
     entry: {
@@ -18,6 +20,14 @@ module.exports = {
     },
     module: {
         rules: [{
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loaders:{
+                    loader: 'file-loader',
+                    options: {
+                        name: 'font/[name].[ext]'
+                    }
+                }
+            }, {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
@@ -52,6 +62,9 @@ module.exports = {
                 ]
             }
         ].concat(isPord ? [{
+            test: /\.css$/,
+            use: extractCSS.extract(['css-loader'])
+        }, {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
@@ -72,6 +85,9 @@ module.exports = {
                 }
             }
         }] : [{
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }, {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
@@ -105,6 +121,7 @@ if (isPord) {
                 NODE_ENV: '"production"'
             }
         }),
+        new CleanWebpackPlugin(['dist']),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             compress: {
@@ -115,6 +132,7 @@ if (isPord) {
             minimize: true
         }),
         new ExtractTextPlugin('css/main.css'),
+        extractCSS,
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: function(module, count) {
