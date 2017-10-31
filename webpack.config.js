@@ -1,15 +1,20 @@
-var path = require('path');
-var webpack = require('webpack');
-var autoPrefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var isPord = process.env.NODE_ENV === 'production';
+const fs = require('fs'),
+    path = require('path'),
+    webpack = require('webpack'),
+    autoPrefixer = require('autoprefixer'),
+    isPord = process.env.NODE_ENV === 'production',
+    ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel=\"stylesheet\" href=\"dist\/css\/main\.css\">/, '')));
 
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        app: './src/main.js'
+    },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: 'dist/',
-        filename: 'build.js'
+        filename: 'js/[name].js'
     },
     module: {
         rules: [{
@@ -23,7 +28,7 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             limit: 1,
-                            name: '[name].[ext]'
+                            name: 'images/[name].[ext]'
                         }
                     },
                     {
@@ -94,7 +99,6 @@ module.exports = {
 
 if (isPord) {
     module.exports.devtool = '#source-map'
-    // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
@@ -110,6 +114,18 @@ if (isPord) {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new ExtractTextPlugin('main.css')
+        new ExtractTextPlugin('css/main.css'),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common',
+            minChunks: function(module, count) {
+                return (
+                    module.resource &&
+                    /\.js$/.test(module.resource) &&
+                    module.resource.indexOf(
+                        path.join(__dirname, 'node_modules')
+                    ) === 0
+                )
+            }
+        })
     ])
 }
