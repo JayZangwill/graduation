@@ -11,3 +11,11 @@
 		transform: scale(1)
 	}
 </style>
+<script>
+  import axios from 'axios';
+  export default {
+  	mounted(){
+	  	console.log(axios)
+  	}
+  };
+</script>
