@@ -3,8 +3,8 @@ const fs = require('fs'),
     webpack = require('webpack'),
     autoPrefixer = require('autoprefixer'),
     isPord = process.env.NODE_ENV === 'production',
-    CleanWebpackPlugin = require('clean-webpack-plugin');
-ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    CleanWebpackPlugin = require('clean-webpack-plugin'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
     extractCSS = new ExtractTextPlugin('css/common.css');
 
 fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.css">/g, '')));
@@ -21,7 +21,7 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                loaders:{
+                loaders: {
                     loader: 'file-loader',
                     options: {
                         name: 'font/[name].[ext]'
