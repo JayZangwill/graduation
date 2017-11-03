@@ -3,9 +3,13 @@
 </template>
 
 <style lang='scss'>
-  h1 {
-    color: #fff;
-  }
+	body,
+	h1,
+	h2,
+	p {
+		margin: 0;
+		padding: 0;
+	}
 </style>
 <script>
   export default {};
