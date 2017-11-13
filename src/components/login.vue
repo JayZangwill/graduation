@@ -3,7 +3,7 @@
 		<div class="login-wrap">
 			<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
 			  <el-form-item label="用户名" prop="username">
-			   	<el-input type="password" v-model="ruleForm2.username" auto-complete="off"></el-input>
+			   	<el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
 			  </el-form-item>
 			  <el-form-item label="密码" prop="pass">
 			    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
@@ -24,33 +24,33 @@
 		height: 100%;
 	}
 	.main {
+    position: relative;
 		width: 100%;
 		height: 100%;
-		background: url(../images/login_bg.jpg) no-repeat 0 0 / cover;
+		background: url('./../images/login_bg.jpg') no-repeat 0 0 / cover;
 		.login-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
 			border-radius: 10px;
-			padding: 20px 20px 10px 0;
+			padding: 45px 30px 10px 0;
 			width: 450px;
 			background: #fff;
 			box-sizing: border-box;
+      transform: translate(-50%, -50%);
 		}
 	}
 </style>
 <script>
    export default {
     data() {
-      var username = (rule, value, callback) => {
-      	value === '' ? callback(new Error('请输入用户名')) : callback();
-      };
-      var pass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else if (value !== this.ruleForm2.username) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
+      let empty = /\s+/,
+          username = (rule, value, callback) => {
+        	value === '' ? callback(new Error('请输入用户名')) : empty.test(value) ? callback(new Error('用户名不能有空格')) : callback();
+          },
+          pass = (rule, value, callback) => {
+            value === '' ? callback(new Error('请输入密码')) : empty.test(value) || value.length < 6 ? callback(new Error('密码至少6位，且不能有空格')) : callback();
+          };
       return {
         ruleForm2: {
           username: '',
@@ -58,10 +58,10 @@
         },
         rules2: {
           username: [
-            { validator: username, trigger: 'blur' }
+            { validator: username, trigger: 'blur,change' }
           ],
           pass: [
-            { validator: pass, trigger: 'blur' }
+            { validator: pass, trigger: 'blur,change' }
           ]
         }
       };

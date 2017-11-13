@@ -5,7 +5,8 @@ const fs = require('fs'),
     isPord = process.env.NODE_ENV === 'production',
     CleanWebpackPlugin = require('clean-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    extractCSS = new ExtractTextPlugin('css/common.css');
+    extractCSS = new ExtractTextPlugin('css/common.css'),
+    extractScss = new ExtractTextPlugin('css/main.css');
 
 fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.css">/g, '')));
 
@@ -69,7 +70,7 @@ module.exports = {
             loader: 'vue-loader',
             options: {
                 loaders: {
-                    scss: ExtractTextPlugin.extract({
+                    scss: extractScss.extract({
                         allChunks: true,
                         fallback: 'vue-style-loader',
                         use: [
@@ -131,8 +132,8 @@ if (isPord) {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new ExtractTextPlugin('css/main.css'),
         extractCSS,
+        extractScss,
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: function(module, count) {
