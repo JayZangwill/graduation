@@ -1,16 +1,16 @@
 <template>
 	<div class="main">
 		<div class="login-wrap">
-			<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+			<el-form :model="logonFrom" status-icon :rules="rules2" ref="logonFrom" label-width="100px" class="demo-ruleForm">
 			  <el-form-item label="用户名" prop="username">
-			   	<el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
+			   	<el-input type="text" v-model="logonFrom.username" auto-complete="off"></el-input>
 			  </el-form-item>
 			  <el-form-item label="密码" prop="pass">
-			    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+			    <el-input type="password" v-model="logonFrom.pass" auto-complete="off"></el-input>
 			  </el-form-item>
 			  <el-form-item>
-			    <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-			    <el-button @click="resetForm('ruleForm2')">重置</el-button>
+			    <el-button type="primary" @click="submitForm('logonFrom')">提交</el-button>
+			    <el-button @click="resetForm('logonFrom')">重置</el-button>
 			  </el-form-item>
 			</el-form>
 		</div>
@@ -27,7 +27,7 @@
     position: relative;
 		width: 100%;
 		height: 100%;
-		background: url('./../images/login_bg.jpg') no-repeat 0 0 / cover;
+		background: url('../images/login_bg.jpg') no-repeat 0 0 / cover;
 		.login-wrap {
       position: absolute;
       top: 50%;
@@ -52,7 +52,7 @@
             value === '' ? callback(new Error('请输入密码')) : empty.test(value) || value.length < 6 ? callback(new Error('密码至少6位，且不能有空格')) : callback();
           };
       return {
-        ruleForm2: {
+        logonFrom: {
           username: '',
           pass: ''
         },
