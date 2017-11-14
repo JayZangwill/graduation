@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="login-main">
 		<div class="login-wrap">
 			<el-form :model="logonFrom" status-icon :rules="rules2" ref="logonFrom" label-width="100px" class="demo-ruleForm">
 			  <el-form-item label="用户名" prop="username">
@@ -23,7 +23,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	.main {
+	.login-main {
     position: relative;
 		width: 100%;
 		height: 100%;
@@ -70,7 +70,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            window.location = '/home';
           } else {
             console.log('error submit!!');
             return false;

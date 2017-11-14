@@ -16,7 +16,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '../',
+        publicPath: 'dist/',
         filename: 'js/[name].js'
     },
     module: {
@@ -115,7 +115,8 @@ module.exports = {
 }
 
 if (isPord) {
-    module.exports.devtool = '#source-map'
+    module.exports.devtool = '#source-map';
+    module.exports.output.publicPath = '../';
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {

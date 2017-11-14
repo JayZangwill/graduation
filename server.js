@@ -2,6 +2,7 @@ const fs = require('fs'),
     express = require('express'),
     app = express(),
     compression = require('compression'),
+    childProcess = require('child_process'),
     history = require('connect-history-api-fallback'),
     staticFileMiddleware = express.static(__dirname);
 let html = fs.readFileSync('index.html').toString();
@@ -20,4 +21,7 @@ app.use(history({
     verbose: true
 }));
 app.use(staticFileMiddleware);
-app.listen(80, () => console.log('server is running!'));
+app.listen(80, () => {
+	childProcess.exec('start http://localhost');
+	console.log('server is running!');
+});
