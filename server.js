@@ -1,4 +1,5 @@
 const fs = require('fs'),
+    os = require('os'),
     express = require('express'),
     app = express(),
     compression = require('compression'),
@@ -22,6 +23,12 @@ app.use(history({
 }));
 app.use(staticFileMiddleware);
 app.listen(80, () => {
-	childProcess.exec('start http://localhost');
-	console.log('server is running!');
+    let ifaces = os.networkInterfaces(),
+        ip;
+    for (let item in ifaces) {
+        ip = Object.values(ifaces[item])[1].address;
+        break;
+    }
+    childProcess.exec(ip ? `start http://${ip}` : 'start http://localhost');
+    console.log('server is running!');
 });
