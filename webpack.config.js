@@ -8,7 +8,7 @@ const fs = require('fs'),
     extractCSS = new ExtractTextPlugin('css/common.min.css'),
     extractScss = new ExtractTextPlugin('css/main.min.css');
 
-fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.css">/g, '')));
+fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.min\.css">/g, '')));
 
 module.exports = {
     entry: {

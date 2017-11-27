@@ -71,10 +71,6 @@
 </template>
 
 <style lang="scss">
-	html,body {
-		height: 100%;
-	}
-	
 	.home-main {
 		height: 100%;
 	}

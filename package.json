@@ -10,7 +10,6 @@
     "server": "npm run build && node server"
   },
   "dependencies": {
-    "cssnano": "^3.10.0",
     "vue": "^2.4.4"
   },
   "devDependencies": {
