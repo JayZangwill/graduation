@@ -9,7 +9,7 @@ let html = fs.readFileSync('index.html').toString();
 
 // index.html的style引入
 if (!/<link rel=\"stylesheet\" href=\"dist\/css\/main.css\">/.test(html)) {
-    html = html.replace(/<title>(\w+)<\/title>/, '<title>$1</title>\n\t<link rel="stylesheet" href="dist/css/common.css">\n\t<link rel="stylesheet" href="dist/css/main.css">');
+    html = html.replace(/<title>(\w+)<\/title>/, '<title>$1</title>\n\t<link rel="stylesheet" href="dist/css/common.min.css">\n\t<link rel="stylesheet" href="dist/css/main.min.css">');
     fs.writeFileSync('index.html', html);
 }
 

@@ -5,8 +5,8 @@ const fs = require('fs'),
     isPord = process.env.NODE_ENV === 'production',
     CleanWebpackPlugin = require('clean-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    extractCSS = new ExtractTextPlugin('css/common.css'),
-    extractScss = new ExtractTextPlugin('css/main.css');
+    extractCSS = new ExtractTextPlugin('css/common.min.css'),
+    extractScss = new ExtractTextPlugin('css/main.min.css');
 
 fs.readFile('index.html', (err, data) => err ? console.log(err) : fs.writeFileSync('index.html', data.toString().replace(/\n(\t|\s+)<link rel="stylesheet" href="dist\/css\/\w+\.css">/g, '')));
 
@@ -81,7 +81,7 @@ module.exports = {
                 },
                 postcss: {
                     plugins: [
-                        autoPrefixer(['iOS >= 7', 'last 2 versions', 'Android >= 2', 'Firefox >= 4', 'Chrome >= 4', 'IE >= 7'])
+                        autoPrefixer(['iOS >= 7', 'last 2 versions', 'Android >= 2', 'Firefox >= 4', 'Chrome >= 4', 'IE >= 9'])
                     ]
                 }
             }
